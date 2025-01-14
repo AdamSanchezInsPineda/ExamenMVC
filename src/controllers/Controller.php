@@ -1,35 +1,5 @@
 <?php
-/*
-$log = fopen("logPhp.txt", 'a');
-        fwrite($log, $found);
-        fclose($log);
-*/
 class Controller {
-    protected $user;
-
-    public function __construct()
-    {
-        session_start();
-        $this->user = new Usuario();
-    }
-
-    protected function checkSession()
-    {
-        if (!isset($_SESSION['nom'])) {
-            $this->render("login", ["error" => "La sessió no s'ha iniciat"]);
-            exit;
-        }
-    }
-
-    protected function checkRole(array $allowedRoles)
-    {
-        $this->checkSession();
-        if (!in_array($_SESSION['rol'], $allowedRoles)) {
-            header('Location: /registers');
-            exit;
-        }
-    }
-
     protected function render($view, $data = [])
     {
         extract($data);
@@ -40,4 +10,20 @@ class Controller {
             echo "View $view not found.";
         }
     }
+
+    protected function checkSession(){
+        session_start();
+        if (!isset($_SESSION["matricula"])) {
+            header('Location: /');
+        }
+    }
+
+    protected function checkAdmin(){
+        session_start();
+        if (!isset($_SESSION["user"])) {
+            header('Location: /');
+            exit;
+        }
+    }
 }
+?>
